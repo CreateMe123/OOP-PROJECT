@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 def compute_total():
     try:
-        order_total = float(price_entry.get())
+        order_total = int(order_entry.get())
 
         if order_total < 0:
             raise ValueError
@@ -30,7 +30,7 @@ def compute_total():
 
 
 def clear_fields():
-    price_entry.delete(0, END)
+    order_entry.delete(0, END)
     result_entry.delete(0, END)
     shipping_var.set(0.0) 
 
@@ -61,8 +61,8 @@ order_label = Label(main_frame, text="Total amount of your order",
                     font=("Times New Roman", 10))
 order_label.grid(pady=1)
 
-price_entry = Entry(main_frame, width=20, font=("Times New Roman", 10))
-price_entry.grid(pady=1)
+order_entry = Entry(main_frame, width=20, font=("Times New Roman", 10))
+order_entry.grid(pady=1)
 
 # --- Shipping Frame ---
 shipping_frame = Frame(root, bg="#f0f0e6", bd=1, relief="solid", width=450, height=120)
