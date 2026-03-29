@@ -84,8 +84,7 @@ result_frame.place(x=236, y=50)
 result_frame.lower(main_frame)
 
 # --- Shipping ---
-shipping_var = DoubleVar(value=0.0)  # FIX 3: explicit default so unselected state is detectable
-
+shipping_var = DoubleVar(value=0.0)
 Label(root, bg="#f0f0e6", text="Shipping method",
       font=("Times New Roman", 10)).place(x=446, y=160)
 
