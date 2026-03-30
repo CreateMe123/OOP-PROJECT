@@ -1,48 +1,67 @@
 from tkinter import *
 from tkinter import messagebox
 
-from idlelib.textview import showerror
+
 def submit():
-    error=[]
+    errors = []
     try:
-        if "@" not in email.get():
-            error.append("Not Contain Email")
+        if not name.get().strip():
+            errors.append("Name cannot be empty.")
+        if "@" not in email.get() or "." not in email.get():
+            errors.append("Invalid email address.")
         if not contact.get().isdigit():
-            error.append("Invalid Phone Number")
-        if len(contact.get())<12 :
-            error.append("Contact number must be least 11")
-        if ("." not in address.get())and("," not in address.get()):
-            error.append("Not Contain Address")
-        if error:
-            raise ValueError("\n".join(error))        
-        info={"Name":name.get(),"Adress":address.get(),"Contact":contact.get(),"Email":email.get()}
-        window=Toplevel(root)
+            errors.append("Contact number must contain digits only.")
+        elif len(contact.get()) < 11:
+            errors.append("Contact number must be at least 11 digits.")
+        if len(address.get().strip()) < 5:
+            errors.append("Please enter a valid address.")
+        if errors:
+            raise ValueError("\n".join(errors))
+
+        info = {
+            "Name":    name.get(),
+            "Address": address.get(),
+            "Contact": contact.get(),
+            "Email":   email.get(),
+        }
+        window = Toplevel(root)
         window.title("Summary")
-        window.geometry("150x100")
-        for     key,infos in info.items():
-            Label(window,text=f"{key}:{infos}",font=("arial",10)).pack()
+        window.geometry("250x130")
+        for key, value in info.items():
+            Label(window, text=f"{key}: {value}", font=("Arial", 10)).pack()
+
     except ValueError as e:
-        messagebox.showerror("ERROR",f"{e}")
+        messagebox.showerror("ERROR", str(e))
+
+
 def clear():
     name.delete(0, END)
     address.delete(0, END)
     contact.delete(0, END)
     email.delete(0, END)
-root=Tk()
+
+
+root = Tk()
 root.geometry("270x250")
 root.title("User Information")
-Label(root,text="Name:",font=("arial",10)).place(x=30,y=10)
-name=Entry(root,width=15)
-name.place(x=140,y=10)
-Label(root,text="Address:",font=("arial",10)).place(x=30,y=50)
-address=Entry(root,width=15)
-address.place(x=140,y=50)
-Label(root,text="Contact Number:",font=("arial",10)).place(x=30,y=100)
-contact=Entry(root,width=15)
-contact.place(x=140,y=100)
-Label(root,text="Email:",font=("arial",10)).place(x=30,y=150)
-email=Entry(root,width=15)
-email.place(x=140,y=150)
-Button(root,text="Submit",command=submit).place(x=30,y=200)
-Button(root,text="Clear",command=clear).place(x=150,y=200)
+
+Label(root, text="Name:",           font=("Arial", 10)).place(x=30,  y=10)
+name = Entry(root, width=15)
+name.place(x=140, y=10)
+
+Label(root, text="Address:",        font=("Arial", 10)).place(x=30,  y=50)
+address = Entry(root, width=15)
+address.place(x=140, y=50)
+
+Label(root, text="Contact Number:", font=("Arial", 10)).place(x=30,  y=100)
+contact = Entry(root, width=15)
+contact.place(x=140, y=100)
+
+Label(root, text="Email:",          font=("Arial", 10)).place(x=30,  y=150)
+email = Entry(root, width=15)
+email.place(x=140, y=150)
+
+Button(root, text="Submit", command=submit).place(x=30,  y=200)
+Button(root, text="Clear",  command=clear).place(x=150, y=200)
+
 root.mainloop()
