@@ -1,41 +1,37 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
 
 
 def compute_total():
     try:
-        order_total = int(order_entry.get())
-
-        if order_total < 0:
-            raise ValueError
-
+        order_total = float(order_entry.get())
         shipping_fee = shipping_var.get()
 
+        if order_total < 0:
+            raise ValueError("Order amount cannot be negative.")
         if shipping_fee == 0.0:
-            result_entry.delete(0, END)
-            result_entry.insert(0, "Select Shipping")
-            return
+            raise ValueError("Please select a shipping option.")
         elif shipping_fee == 5.95 and order_total >= 75:
             shipping_fee = 0.0
-        else:
-            pass
+
         total = 1.12 * (order_total + shipping_fee)
 
         result_entry.delete(0, END)
         result_entry.insert(0, f"{total:.2f}")
 
-    except ValueError:
-        result_entry.delete(0, END)
-        result_entry.insert(0, "Check Input")
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
 
 
 def clear_fields():
     order_entry.delete(0, END)
     result_entry.delete(0, END)
-    shipping_var.set(0.0) 
+    shipping_var.set(0.0)
 
 
 root = Tk()
+root.geometry("1000x500")
 
 # --- Images ---
 img_urs = ImageTk.PhotoImage(Image.open("University_of_Rizal.png").resize((50, 50)))
@@ -43,7 +39,6 @@ img_cert = ImageTk.PhotoImage(Image.open("Screenshot 2026-03-20 221441.png").res
 img_py = ImageTk.PhotoImage(Image.open("images.jpg").resize((85, 60)))
 img_bg = ImageTk.PhotoImage(Image.open("many-jars-of-candles-are-on-shelves-in-a-room-photo.jpg").resize((1000, 500)))
 
-root.geometry("1000x500")
 
 # --- Frames ---
 main_frame = Frame(root, bg="#f0f0e6")
@@ -53,16 +48,16 @@ overlay_frame = Frame(root, width=1, height=1)
 overlay_frame.place(relx=0.5, rely=0.25, anchor=CENTER)
 
 # --- Title & Input ---
-title_label = Label(main_frame, text="CandleLine Corporation",
+title_label = Label(root, text="CandleLine Corporation", bg="#f0f0e6",
                     font=("Times New Roman", 20, "underline", "bold"))
-title_label.grid(pady=10)
+title_label.place(relx=0.52, rely=0.18, anchor=CENTER)
 
-order_label = Label(main_frame, text="Total amount of your order",
+order_label = Label(root, text="Total amount of your order",
                     font=("Times New Roman", 10))
-order_label.grid(pady=1)
+order_label.place(relx=0.5, rely=0.25, anchor=CENTER)
 
-order_entry = Entry(main_frame, width=20, font=("Times New Roman", 10))
-order_entry.grid(pady=1)
+order_entry = Entry(root, width=20, font=("Times New Roman", 10))
+order_entry.place(relx=0.5, rely=0.29, anchor=CENTER)
 
 # --- Shipping Frame ---
 shipping_frame = Frame(root, bg="#f0f0e6", bd=1, relief="solid", width=450, height=120)
@@ -109,17 +104,12 @@ Label(root, bg="#f0f0e6",
       text="Amounts Payable (12% VAT included): ",
       font=("Times New Roman", 10)).place(x=336, y=300)
 
-result_entry = Entry(root, width=20, font=("Times New Roman", 10))
+result_entry = Entry(root, width=20, font=("Times New Roman", 10), bg="#DBDBD0")
 result_entry.place(x=556, y=300)
 
 # --- Lines ---
-canvas_top = Canvas(root, bg="black", height=2, width=450)
-canvas_top.place(x=286, y=330)
-canvas_top.create_line(10, 75, 300, 75, fill="blue", width=3)
-
-canvas_bottom = Canvas(root, bg="black", height=2, width=450)
-canvas_bottom.place(x=286, y=380)
-canvas_bottom.create_line(10, 75, 300, 75, width=3)
+Frame(root, width=500, height=1, bg="black").place(x=520, rely=0.75, anchor=CENTER)
+Frame(root, width=500, height=1, bg="black").place(x=520, rely=0.66, anchor=CENTER)
 
 # --- Buttons ---
 Button(root, text="Clear", command=clear_fields).place(x=446, y=340)
