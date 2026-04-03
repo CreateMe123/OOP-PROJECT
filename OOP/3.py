@@ -69,7 +69,7 @@ def clear():
 def show_print_view():
     result = compute()
     if result is None:
-        return  # validation failed; error already shown by compute()
+        return
 
     basic, ot_amount, tax, deduct, net_pay = result
 
