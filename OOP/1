@@ -24,7 +24,7 @@ def submit():
             "Contact": contact.get(),
             "Email":   email.get(),
         }
-        for widget in window.winfo_children():
+        for widget in root.winfo_children():
     		if isinstance(widget, Toplevel) and getattr(widget, "_is_print_frame", False):
         		widget.destroy()
         window = Toplevel(root)
