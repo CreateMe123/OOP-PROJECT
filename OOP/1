@@ -7,7 +7,7 @@ def submit():
     try:
         if not name.get().strip():
             errors.append("Name cannot be empty.")
-        if "@" not in email.get() or "." not in email.get():
+        if "@" not in email.get() and "." not in email.get():
             errors.append("Invalid email address.")
         if not contact.get().isdigit():
             errors.append("Contact number must contain digits only.")
